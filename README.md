@@ -72,7 +72,49 @@ User authentication mechanisms are essential to ensure secure and authorized acc
 Client-server chat applications are versatile tools that facilitate real-time communication between users over a network. They incorporate various components, including server-side and client-side elements, and must consider factors such as security, scalability, and concurrency. As technology continues to advance, client-server chat applications remain integral for collaborative communication in various domains.
 
 Client-server chat applications are foundational to real-time communication over networks. They incorporate principles of socket programming, communication protocols, and security mechanisms to provide a seamless user experience. Understanding the basics of client-server chat applications is essential for developers involved in networked application development, as they form the backbone of various collaborative communication systems. As technology evolves, chat applications continue to adapt, incorporating new features and technologies to enhance user interaction and connectivity.
-
+## Program:
+Client.py:
+```
+import socket
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("localhost", 5001))
+while True:
+    message = input("Client: ")
+    client.send(message.encode())
+    if message.lower() == "bye":
+        break
+    reply = client.recv(1024).decode()
+    print("Server:", reply)
+    if reply.lower() == "bye":
+        break
+client.close()
+```
+Server.py:
+```
+import socket
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("localhost", 5001))
+server.listen(1)
+print("Waiting for client connection...")
+conn, addr = server.accept()
+print("Connected to:", addr)
+while True:
+    message = conn.recv(1024).decode()
+    if message.lower() == "bye":
+        print("Client:", message)
+        print("Client disconnected.")
+        break
+    print("Client:", message)
+    reply = input("Server: ")
+    conn.send(reply.encode())
+    if reply.lower() == "bye":
+        break
+conn.close()
+server.close()
+```
+## Output:
+<img width="1236" height="291" alt="Screenshot 2026-08-03 114658" src="https://github.com/user-attachments/assets/52ee22a7-75d9-4010-b942-cabcd78a613f" />
+[1b.pdf](https://github.com/user-attachments/files/30649495/1b.pdf)
 
 ## Result:
 
